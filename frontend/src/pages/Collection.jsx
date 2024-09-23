@@ -4,11 +4,12 @@ import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import Productitem from "../components/Productitem";
 const Collection = () => {
-  const { products } = useContext(ShopContext);
+  const { products, Search, showSearch } = useContext(ShopContext);
   const [showFilter, setshowFilter] = useState(false);
   const [filterproducts, setfilterproducts] = useState([]);
   const [category, setcategory] = useState([]);
   const [subCategory, setsubcategory] = useState([]);
+  const [sortType, setsortType] = useState("relavent");
 
   // Filter Code
   const toggleCategory = (e) => {
@@ -28,6 +29,13 @@ const Collection = () => {
   const applyFilter = () => {
     let productCopy = products.slice();
 
+    // Search Option
+    if (showSearch && Search) {
+      productCopy = productCopy.filter((item) =>
+        item.name.toLowerCase().includes(Search.toLowerCase())
+      );
+    }
+
     if (category.length > 0) {
       productCopy = productCopy.filter((item) =>
         category.includes(item.category)
@@ -42,13 +50,29 @@ const Collection = () => {
   };
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory]);
+  }, [category, subCategory, Search, showSearch]);
 
   // Sort Option Code
 
   const sortProduct = () => {
     let fpCopy = filterproducts.slice();
+    switch (sortType) {
+      case "low-high":
+        setfilterproducts(fpCopy.sort((a, b) => a.price - b.price));
+        break;
+
+      case "high-low":
+        setfilterproducts(fpCopy.sort((a, b) => b.price - a.price));
+        break;
+
+      default:
+        applyFilter();
+        break;
+    }
   };
+  useEffect(() => {
+    sortProduct();
+  }, [sortType]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
@@ -147,7 +171,10 @@ const Collection = () => {
         <div className="flex justify-between text-base sm:text-2xl mb-4">
           <Title text1={"ALL"} text2={"COLLECTION"} />
           {/* Product Sort */}
-          <select className="border border-gray-300 text-sm px-2">
+          <select
+            onChange={(e) => setsortType(e.target.value)}
+            className="border border-gray-300 text-sm px-2"
+          >
             <option value="relavent">Sort by: Relavent</option>
             <option value="low-high">Sort by: Low to High</option>
             <option value="high-low">Sort by: High to Low</option>
@@ -160,7 +187,7 @@ const Collection = () => {
           {filterproducts.map((item, index) => (
             <Productitem
               key={index}
-              id={item.id}
+              id={item._id}
               name={item.name}
               price={item.price}
               image={item.image}

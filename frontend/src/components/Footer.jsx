@@ -7,8 +7,8 @@ const Footer = () => {
         <div>
           <img src={assets.logo} className="mb-5 w-32" alt="" />
           <p className="w-full md:w-2/3 text-gray-600">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit,
-            fuga.
+            Experience ultimate comfort with our memory foam slippers. Designed
+            to mold to your feet for personalized support.
           </p>
         </div>
         <div>
