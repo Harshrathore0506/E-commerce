@@ -11,6 +11,10 @@ const Product = () => {
   const [image, setImage] = useState("");
   const [size, setsize] = useState("M");
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const fetchProductData = async () => {
     products.map((item) => {
       if (item._id === productId) {
@@ -22,7 +26,7 @@ const Product = () => {
   };
   useEffect(() => {
     fetchProductData();
-  }, [productId]);
+  }, [productId, products]);
 
   return productData ? (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
@@ -121,10 +125,12 @@ const Product = () => {
       </div>
 
       {/* ---------------------------------Display Related Product--------------------------------- */}
-      <Related_Product
-        category={productData.category}
-        subCategory={productData.subCategory}
-      />
+      <div onClick={scrollToTop}>
+        <Related_Product
+          category={productData.category}
+          subCategory={productData.subCategory}
+        />
+      </div>
     </div>
   ) : (
     <div className="opacity-0"></div>

@@ -5,11 +5,26 @@ import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
 const Navbar = () => {
   const [visible, setvisible] = useState(false);
-  const { setShowSearch } = useContext(ShopContext);
+  const {
+    setShowSearch,
+    getCartCount,
+    navigate,
+    token,
+    setToken,
+    setCartItem,
+  } = useContext(ShopContext);
+
+  const logout = () => {
+    navigate("/login");
+    localStorage.removeItem("token");
+    setToken("");
+    setCartItem({});
+  };
+
   return (
     <div className="flex items-center justify-between py-5 font-medium">
       <Link to={"/"}>
-        <img src={assets.logo} className="w-36" alt="" />
+        <h1 className="text-2xl">Trendify</h1>
       </Link>
 
       {/* The hidden class is often used in combination with other responsive
@@ -45,22 +60,33 @@ const Navbar = () => {
         />
         <div className="group relative">
           <img
+            onClick={() => (token ? null : navigate("/login"))}
             className="w-5 cursor-pointer"
             src={assets.profile_icon}
             alt=""
           />
-          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-            <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-              <p className="cursor-pointer hover:text-black">My Profile</p>
-              <p className="cursor-pointer hover:text-black">Order</p>
-              <p className="cursor-pointer hover:text-black">LogOut</p>
+          {/* Drop Down Menu */}
+          {token && (
+            <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
+              <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
+                <p className="cursor-pointer hover:text-black">My Profile</p>
+                <p
+                  onClick={() => navigate("/orders")}
+                  className="cursor-pointer hover:text-black"
+                >
+                  Order
+                </p>
+                <p onClick={logout} className="cursor-pointer hover:text-black">
+                  LogOut
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <Link to="/cart" className="relative">
           <img src={assets.cart_icon} alt="" className="w-5 min-w-5" />
           <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px] ">
-            10
+            {getCartCount()}
           </p>
         </Link>
         <img

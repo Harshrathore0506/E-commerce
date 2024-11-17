@@ -50,7 +50,7 @@ const Collection = () => {
   };
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory, Search, showSearch]);
+  }, [category, subCategory, Search, showSearch, products]);
 
   // Sort Option Code
 
