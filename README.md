@@ -6,7 +6,7 @@ A modern, full-featured **E-Commerce Website** where users can **browse products
 
 ## 🌐 Live Demo
 
-👉 [Click Here to Visit the Live Site]([https://your-deployment-link.com](https://e-commerce-frontend-umber.vercel.app/))  
+👉 [Click Here to Visit the Live Site]((https://e-commerce-frontend-umber.vercel.app/))  
 
 ---
 
